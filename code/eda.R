@@ -81,6 +81,9 @@ vario3 <- variog(coords=data1[,1:2], data=data3$res, uvec=(seq(0, max.dist, leng
 plot(vario3,pch=16)
 
 #### adding the coordinates into the regression
+max.dist <- 0.75*max(iDist(data1[,1:2]))
+bins <- 20
+
 lmobj2s=lm(y~x+sx+sy,data=data2)
 data2$res2=lmobj2s$residuals
 myplot(data2,"res2")
