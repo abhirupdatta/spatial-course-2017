@@ -251,8 +251,3 @@ points(coords,cex=1)
 beta_mle=mle$beta
 beta_mle_CI=mle$beta+1.96*t(t(sqrt(diag(mle$beta.var))))%*%c(-1,1)
 
-
-
-
-
-
