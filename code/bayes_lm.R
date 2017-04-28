@@ -108,8 +108,10 @@ for(i in 1:N){
 MCMCmat=cbind(betamat,wmat,sigsvec,tausvec)
 colnames(MCMCmat)= c(paste0("beta",1:length(beta)),paste0("w",1:length(w)),"sigs","taus")
 #write.csv(MCMCmat,"data3MCMCmat.csv",row.names=F,quote=F)
+samples=MCMCmat
 
-samples=read.csv("data3MCMCmat.csv")
+### loading the pre-saved samples as the MCMC takes a while
+### samples=read.csv("data3MCMCmat.csv")
 
 pbsample <- samples[Nb:N,] ## post burn-in samples
 
@@ -141,7 +143,6 @@ data3$what=what
 myplot(data3,"what")
 
 ### plotting kriged surface ###
-
 set.seed(1)
 subsample=pbsample[sample(1:nrow(pbsample),100),]
 
@@ -236,15 +237,18 @@ Rmcmc <- buildMCMC(modelconf)
 nimbleOptions(showCompilerOutput = FALSE) 
 Cmcmc <- compileNimble(Rmcmc, project = model) ## compiling MCMC
 set.seed(1)
-Cmcmc$run() ## running MCMC
+Cmcmc$run(100) ## running MCMC
 
 samples <- as.matrix(Cmcmc$mvSamples)
 #write.csv(samples,"data3nimble.csv",quote=F,row.names=F)
-samples = read.csv("data3nimble.csv")
+
+### loading the pre-saved samples
+### samples = read.csv("../data/data3nimble.csv")
 
 pbsample <- samples[Nb:N,] ## post burn-in samples
 
 qtls <- apply(pbsample,2,quantile,c(0.025,0.5,0.95))
+qtls
 
 #### true values and posterior distribution and quantiles ####
 dev.new()
